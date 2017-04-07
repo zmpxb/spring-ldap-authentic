@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="ldap://10.94.221.63:389" />
+        <!--对应BindDn or User 的dc部分，或者是基础部分-->
+        <property name="base" value="dc=xiaozl,dc=com" />
+        <!--对应dc前面的部分-->
+        <property name="userDn" value="cn=Manager,dc=xiaozl,dc=com" />
+        <property name="password" value="secret" />
+    </bean>
+
+    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+        <constructor-arg ref="contextSource" />
+    </bean>
+
+    <bean id="personDao" class="com.xiaozl.dao.PersonDaoImpl">
+        <property name="ldapTemplate" ref="ldapTemplate" />
+    </bean>
+
+
+</beans>
